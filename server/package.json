@@ -1,0 +1,20 @@
+{
+  "name": "minhas-financas",
+  "version": "1.0.0",
+  "description": "Seu sistema de gestão financeira pessoal",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npx nodemon index.js"
+  },
+  "author": "Eduardo Cintra",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "knex": "^0.21.1",
+    "pg": "^8.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
