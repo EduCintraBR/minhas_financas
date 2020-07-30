@@ -2,7 +2,9 @@ const db = require('../database/connection')
 
 class ItemController {
     async index(request, response){
-        const items = await db('item').select('*')
+        const trans = await db.transaction()
+
+        const items = await trans('item').select('*').orderBy('id')
         return response.json(items)
     }
 
