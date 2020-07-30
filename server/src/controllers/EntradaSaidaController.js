@@ -1,8 +1,10 @@
 const db = require('../database/connection')
 
-class FonteRendaController {
+class EntradaSaidaController {
     async index(request, response) {
-        const fr = await db('entrada_saida').select('*').orderBy('id')
+        const trans = await db.transaction()
+
+        const fr = await trans('entrada_saida').select('*').orderBy('id')
         return response.json(fr)
     }
 
@@ -12,7 +14,7 @@ class FonteRendaController {
 
     async create(request, response) {
         const { descricao, valor } = request.body
-        const fonteRenda = {
+        const entradaSaida = {
             descricao,
             valor
         }
@@ -20,7 +22,7 @@ class FonteRendaController {
         const trans = await db.transaction()
 
         try {
-            const res = await trans('entrada_saida').insert([fonteRenda], ['id'])
+            const res = await trans('entrada_saida').insert([entradaSaida], ['id'])
 
             trans.commit() 
             return response.status(201).json({success: 'Fonte de renda cadastrada com sucesso, Id: ' + res[0].id})
@@ -35,7 +37,7 @@ class FonteRendaController {
         const { id } = request.params
         const { descricao, valor } = request.body
 
-        const fonteRenda = {
+        const entradaSaida = {
             descricao,
             valor
         }
@@ -43,7 +45,7 @@ class FonteRendaController {
         const trans = await db.transaction()
 
         try {
-            const res = await trans('entrada_saida').update(fonteRenda).where('id', id)
+            const res = await trans('entrada_saida').update(entradaSaida).where('id', id)
             trans.commit()
 
             if (res > 0) {
@@ -83,4 +85,4 @@ class FonteRendaController {
     }
 }
 
-module.exports = FonteRendaController
+module.exports = EntradaSaidaController

@@ -2,7 +2,9 @@ const db = require('../database/connection')
 
 class CartaoController {
     async index(request, response){
-        const cartao = await db('cartao').select('*').orderBy('id')
+        const trans = await db.transaction()
+
+        const cartao = await trans('cartao').select('*').orderBy('id')
         response.json(cartao)
     }
 
