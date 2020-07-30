@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Form, Button, Table } from 'react-bootstrap';
+import { Container, Form, Button, Table, Col, Row } from 'react-bootstrap';
 import api from '../services/api'
 import { FaTrash, FaEdit } from 'react-icons/fa'
 import CF from 'react-currency-format';
@@ -73,29 +73,35 @@ const EntradaSaida = () => {
 
     return (
         <Container fluid="md">
+            <h2 className="text-center my-4">Entradas e Saídas</h2>
             <Form onSubmit={handleSubmit}>
-                <Form.Group controlId="formBasicDesc">
-                    <Form.Label className="d-block font-weight-bold text-center">Descrição do Crédito/Débito</Form.Label>
-                    <Form.Control type="text" placeholder="Insira o nome/descrição da sua renda ou débito" value={descricao} onChange={e => handleInputDesc(e.target.value)} required />
-                </Form.Group>
+                <Row>
+                    <Col xs={9}>
+                        <Form.Group controlId="formBasicDesc">
+                            <Form.Label className="d-block font-weight-bold text-center">Descrição do Crédito/Débito</Form.Label>
+                            <Form.Control type="text" placeholder="Insira o nome/descrição da sua renda ou débito" value={descricao} onChange={e => handleInputDesc(e.target.value)} required />
+                        </Form.Group>
+                    </Col>
 
-                <Form.Group controlId="formBasicVal">
-                    <Form.Label className="d-block font-weight-bold text-center">Valor</Form.Label>
-                    <CF 
-                        value={isNaN(valor) ? '' : valor} 
-                        decimalSeparator={'.'} 
-                        customInput={Form.Control} 
-                        onChange={e => handleInputValor(e.target.value)} 
-                        required
-                    />
-                </Form.Group>
-                
+                    <Col xs={3}>
+                        <Form.Group controlId="formBasicVal">
+                            <Form.Label className="d-block font-weight-bold text-center">Valor</Form.Label>
+                            <CF 
+                                value={isNaN(valor) ? '' : valor} 
+                                decimalSeparator={'.'} 
+                                customInput={Form.Control} 
+                                onChange={e => handleInputValor(e.target.value)} 
+                                required
+                                />
+                        </Form.Group>
+                    </Col>
+                </Row>
+
                 <Button variant="outline-success btn-block" type="submit">
                     Cadastrar Entrada / Saída
                 </Button>
             </Form>
             <hr/>
-            <h3 className="text-center">Entradas e Saídas</h3>
             <Table responsive>
                 <thead>
                     <tr>

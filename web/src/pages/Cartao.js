@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Button, Container, Table } from 'react-bootstrap'
+import { Form, Button, Container, Table, Row, Col } from 'react-bootstrap'
 import api from '../services/api'
 import { FaTrash, FaEdit } from 'react-icons/fa'
 
@@ -78,23 +78,29 @@ const Cartao = () => {
 
     return (
         <Container fluid="md">
+            <h2 className="text-center my-4">Cartões</h2>
             <Form onSubmit={handleSubmit}>
-                <Form.Group controlId="formBasicDesc">
-                    <Form.Label className="d-block font-weight-bold text-center">Descrição do Cartão</Form.Label>
-                    <Form.Control type="text" placeholder="Insira o nome ou descrição do seu cartão" value={descricao} onChange={handleInputDesc} required />
-                </Form.Group>
+                <Row>
+                    <Col xs={8}>
+                        <Form.Group controlId="formBasicDesc">
+                            <Form.Label className="d-block font-weight-bold text-center">Descrição do Cartão</Form.Label>
+                            <Form.Control type="text" placeholder="Insira o nome ou descrição do seu cartão" value={descricao} onChange={handleInputDesc} required />
+                        </Form.Group>
+                    </Col>
+                    <Col xs={4}>
+                        <Form.Group controlId="formBasicBand">
+                            <Form.Label className="d-block font-weight-bold text-center">Bandeira</Form.Label>
+                            <Form.Control type="text" placeholder="Mastercard, Visa..." value={bandeira} onChange={handleInputBand} required/>
+                        </Form.Group>
+                    </Col>
+                </Row>
 
-                <Form.Group controlId="formBasicBand">
-                    <Form.Label className="d-block font-weight-bold text-center">Bandeira</Form.Label>
-                    <Form.Control type="text" placeholder="Mastercard, Visa..." value={bandeira} onChange={handleInputBand} required/>
-                </Form.Group>
-                
                 <Button variant="outline-success btn-block" type="submit">
                     Cadastrar Cartão
                 </Button>
             </Form>
             <hr/>
-            <h3 className="text-center">Cartões</h3>
+            
             <Table responsive>
                 <thead>
                     <tr>
