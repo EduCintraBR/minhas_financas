@@ -21,14 +21,6 @@ const Cartao = () => {
         setDescricao(desc)
     }
 
-    function clearLocal(){
-        localStorage.removeItem('idCartao')
-        localStorage.removeItem('descCartao')
-        localStorage.removeItem('bandeiraCartao')
-        setDescricao('')
-        setBandeira('')
-    }
-
     function handleInputBand(event) {
         const bandeira = event.target.value
         setBandeira(bandeira)
@@ -65,6 +57,14 @@ const Cartao = () => {
         localStorage.setItem('descCartao', desc)
         localStorage.setItem('bandeiraCartao', band)
         handleValues()
+    }
+
+    function clearLocal(){
+        localStorage.removeItem('idCartao')
+        localStorage.removeItem('descCartao')
+        localStorage.removeItem('bandeiraCartao')
+        setDescricao('')
+        setBandeira('')
     }
 
     function handleValues() {

@@ -26,11 +26,10 @@ const EntradaSaida = () => {
         setValor(val)
     }
 
-    
     async function handleSubmit(event) {
         event.preventDefault()
         const entsai = { descricao, valor }
-        console.log(entsai)
+
         if (operacao === 1) {
             let id = await api.post('entrada_saida', entsai)
             clearLocal()

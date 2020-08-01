@@ -9,6 +9,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 //Configurando localização
 import ptbr from 'date-fns/locale/pt-BR'
+import { parseISO } from 'date-fns'
 registerLocale('pt-BR', ptbr)
 
 const Item = () => {
@@ -18,6 +19,7 @@ const Item = () => {
     const [ startDate, setStartDate ] = useState(new Date());
     const [ valorTotal, setValorTotal ] = useState(0)
     const [ flgRec, setFlgRec ] = useState('N')
+    const [ operacao, setOperacao ] = useState(1)
     const [ item, setItem ] = useState([])
     
     useEffect(() => {
@@ -26,24 +28,88 @@ const Item = () => {
         })
     }, [ idItem ])
 
-    async function handleUpdate(id, desc, data, valor, flg) {
+    function handleInputDesc(value) {
+        setDescricao(value)
+    }
+    function handleInputValor(value) {
+        setValorTotal(value)
+    }
+    function handleCheckRec(event) {
+        event.target.checked ? setFlgRec('S') : setFlgRec('N')
+    }
 
+    async function handleSubmit(event) {
+        event.preventDefault()
+        const item = {
+            descricao,
+            data_compra: startDate,
+            valor_total: valorTotal,
+            flg_recorrente: flgRec
+        }
+        
+        if (operacao === 1) {
+            let id = await api.post('/item', item)
+            clearLocal()
+            setIdItem(id)  
+        } else if (operacao === 2) {
+            let id = await api.put(`/item/${idItem}`, item)
+            clearLocal()
+            setIdItem(id)
+        }
+    }
+
+    async function handleUpdate(id, desc, data, valor, flg) {
+        setOperacao(2)
+        let DC = parseISO(data)
+        DC = DC.toISOString()
+        localStorage.setItem('idItem', id)
+        localStorage.setItem('descItem', desc)
+        localStorage.setItem('data_compra', DC)
+        localStorage.setItem('valTotItem', valor)
+        localStorage.setItem('flgRec', flg)
+        handleValues()
     }
     async function handleDestroy(idItem) {
         const id = await api.delete(`/item/${idItem}`)
         setIdItem(id)
     }
 
+    function clearLocal(){
+        localStorage.removeItem('idItem')
+        localStorage.removeItem('descItem')
+        localStorage.removeItem('data_compra')
+        localStorage.removeItem('valTotItem')
+        localStorage.removeItem('flgRec')
+        setDescricao('')
+        setStartDate(new Date())
+        setValorTotal(0)
+        setFlgRec('N')
+        setOperacao(1)
+    }
+
+    function handleValues() {
+        const id = localStorage.getItem('idItem')
+        const desc = localStorage.getItem('descItem')
+        const data_compra = localStorage.getItem('data_compra')
+        const valor_total = localStorage.getItem('valTotItem')
+        const flgRec = localStorage.getItem('flgRec')
+        setIdItem(id)
+        setDescricao(desc)
+        setStartDate(new Date(data_compra))
+        setValorTotal(valor_total)
+        setFlgRec(flgRec)
+    }
+
     return (
         <React.Fragment>
         <Container fluid="md">
         <h2 className="text-center my-4">Itens</h2>
-            <Form onSubmit={()=>{}}>
+            <Form onSubmit={handleSubmit}>
                 <Row>
                     <Col xs={12}>
                         <Form.Group controlId="formBasicDesc">
                             <Form.Label className="d-block font-weight-bold text-center">Descrição do Item</Form.Label>
-                            <Form.Control type="text" placeholder="Insira o nome ou descrição do seu item" onChange={()=>{}} required />
+                            <Form.Control type="text" placeholder="Insira o nome ou descrição do seu item" onChange={e => handleInputDesc(e.target.value)} value={descricao} required />
                         </Form.Group>
                     </Col>
                 </Row>
@@ -66,10 +132,10 @@ const Item = () => {
                         <Form.Group controlId="formBasicVal">
                             <Form.Label className="d-block font-weight-bold text-center">Valor Total</Form.Label>
                             <CF 
-                                // value={isNaN(valor) ? '' : valor} 
+                                value={isNaN(valorTotal) ? '' : valorTotal} 
                                 decimalSeparator={'.'} 
                                 customInput={Form.Control} 
-                                // onChange={e => handleInputValor(e.target.value)} 
+                                onChange={e => handleInputValor(e.target.value)} 
                                 required
                             />
                         </Form.Group>
@@ -77,7 +143,7 @@ const Item = () => {
 
                     <Col md={{ span: 2, offset: 1 }}>
                         <Form.Group controlId="formBasicCheckbox" className="mt-4">
-                            <Form.Check type="checkbox" label="Divida recorrente?" checked={true} />
+                            <Form.Check type="checkbox" label="Divida recorrente?" onChange={handleCheckRec} checked={ flgRec === 'S' ? true : false } />
                         </Form.Group>
                     </Col>
                 </Row>
@@ -106,7 +172,7 @@ const Item = () => {
                             <td>{i.descricao}</td>
                             <td>{i.data_compra}</td>
                             <td>{i.valor_total}</td>
-                            <td>{i.flg_recorrente}</td>
+                            <td>{i.flg_recorrente === 'S' ? 'Sim' : 'Não'}</td>
                             <td>
                                 <FaEdit 
                                     size={24}
