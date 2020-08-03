@@ -13,12 +13,13 @@ class ItemController {
     }
 
     async create(request, response){
-        const { descricao, data_compra, valor_total, flg_recorrente } = request.body
+        const { descricao, data_compra, valor_total, flg_recorrente, flg_parcelado } = request.body
         const item = {
             descricao,
             data_compra,
             valor_total,
-            flg_recorrente
+            flg_recorrente,
+            flg_parcelado
         }
 
         const trans = await db.transaction()
@@ -35,12 +36,13 @@ class ItemController {
 
     async update(request, response){
         const { id } = request.params
-        const { descricao, data_compra, valor_total, flg_recorrente } = request.body
+        const { descricao, data_compra, valor_total, flg_recorrente, flg_parcelado } = request.body
         const item = {
             descricao,
             data_compra,
             valor_total,
-            flg_recorrente
+            flg_recorrente,
+            flg_parcelado
         }
 
         const trans = await db.transaction()

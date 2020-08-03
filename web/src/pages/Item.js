@@ -19,6 +19,7 @@ const Item = () => {
     const [ startDate, setStartDate ] = useState(new Date());
     const [ valorTotal, setValorTotal ] = useState(0)
     const [ flgRec, setFlgRec ] = useState('N')
+    const [ flgParc, setFlgParc ] = useState(false)
     const [ operacao, setOperacao ] = useState(1)
     const [ item, setItem ] = useState([])
     
@@ -37,6 +38,9 @@ const Item = () => {
     function handleCheckRec(event) {
         event.target.checked ? setFlgRec('S') : setFlgRec('N')
     }
+    function handleChekParc(event){
+        event.target.checked ? setFlgParc(true) : setFlgParc(false)
+    }
 
     async function handleSubmit(event) {
         event.preventDefault()
@@ -44,7 +48,8 @@ const Item = () => {
             descricao,
             data_compra: startDate,
             valor_total: valorTotal,
-            flg_recorrente: flgRec
+            flg_recorrente: flgRec,
+            flg_parcelado: flgParc
         }
         
         if (operacao === 1) {
@@ -58,7 +63,7 @@ const Item = () => {
         }
     }
 
-    async function handleUpdate(id, desc, data, valor, flg) {
+    async function handleUpdate(id, desc, data, valor, flgRec, flgParc) {
         setOperacao(2)
         let DC = parseISO(data)
         DC = DC.toISOString()
@@ -66,7 +71,8 @@ const Item = () => {
         localStorage.setItem('descItem', desc)
         localStorage.setItem('data_compra', DC)
         localStorage.setItem('valTotItem', valor)
-        localStorage.setItem('flgRec', flg)
+        localStorage.setItem('flgRec', flgRec)
+        localStorage.setItem('flgParc', flgParc)
         handleValues()
     }
     async function handleDestroy(idItem) {
@@ -80,10 +86,12 @@ const Item = () => {
         localStorage.removeItem('data_compra')
         localStorage.removeItem('valTotItem')
         localStorage.removeItem('flgRec')
+        localStorage.removeItem('flgParc')
         setDescricao('')
         setStartDate(new Date())
         setValorTotal(0)
         setFlgRec('N')
+        setFlgParc(false)
         setOperacao(1)
     }
 
@@ -93,11 +101,13 @@ const Item = () => {
         const data_compra = localStorage.getItem('data_compra')
         const valor_total = localStorage.getItem('valTotItem')
         const flgRec = localStorage.getItem('flgRec')
+        const flgParc = localStorage.getItem('flgParc')
         setIdItem(id)
         setDescricao(desc)
         setStartDate(new Date(data_compra))
         setValorTotal(valor_total)
         setFlgRec(flgRec)
+        setFlgParc(flgParc)
     }
 
     return (
@@ -142,8 +152,14 @@ const Item = () => {
                     </Col>
 
                     <Col md={{ span: 2, offset: 1 }}>
-                        <Form.Group controlId="formBasicCheckbox" className="mt-4">
+                        <Form.Group controlId="formBasicCheckRec" className="mt-4">
                             <Form.Check type="checkbox" label="Divida recorrente?" onChange={handleCheckRec} checked={ flgRec === 'S' ? true : false } />
+                        </Form.Group>
+                    </Col>
+
+                    <Col md={{ span: 2, offset: 1 }}>
+                        <Form.Group controlId="formBasicCheckParc" className="mt-4">
+                            <Form.Check type="checkbox" label="Compra parcelada?" onChange={handleChekParc} checked={ flgParc } />
                         </Form.Group>
                     </Col>
                 </Row>
@@ -163,6 +179,7 @@ const Item = () => {
                         <th>Data da Compra</th>
                         <th>Valor Total</th>
                         <th>Dívida Recorrente?</th>
+                        <th>Compra Parcelada?</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -173,10 +190,11 @@ const Item = () => {
                             <td>{i.data_compra}</td>
                             <td>{i.valor_total}</td>
                             <td>{i.flg_recorrente === 'S' ? 'Sim' : 'Não'}</td>
+                            <td>{i.flg_parcelado === true ? 'Sim' : 'Não'}</td>
                             <td>
                                 <FaEdit 
                                     size={24}
-                                    onClick={() =>{handleUpdate(i.id, i.descricao, i.data_compra, i.valor_total, i.flg_recorrente)}}
+                                    onClick={() =>{handleUpdate(i.id, i.descricao, i.data_compra, i.valor_total, i.flg_recorrente, i.flg_parcelado)}}
                                 />
                             </td>
                             <td>
