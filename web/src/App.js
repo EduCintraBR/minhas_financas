@@ -3,7 +3,8 @@ import React from 'react';
 import Header from './pages/Header'
 import Router from './routes'
 
-import './App.css';
+import './assets/styles/global.css';
+
 
 function App() {
   return (
