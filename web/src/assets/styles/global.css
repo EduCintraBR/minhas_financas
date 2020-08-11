@@ -3,7 +3,131 @@
     border: 1px solid #d3d3d3;
   }
 
+ /* CSS HEADER */
+
 .Nav {
     background-color: #05668D;
     height: 60px;
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    grid-template-rows: 1fr;
 }
+
+.logo {
+  font-family: 'Montserrat', sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 32px;
+  line-height: 60px;
+  color: #d3de32;
+  text-align: center;
+}
+
+#menus {
+  display: flex;
+  align-items: center;
+}
+
+#menus ul {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  max-width: 1000px;
+}
+
+#menus ul li {
+  list-style-type: none;
+  font-size: 24px;
+  font-family: 'Montserrat', sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 24px;
+  color: #F4F1DE;
+}
+
+#menus ul li a {
+  line-height: 60px;
+  text-decoration: none;
+}
+#menus ul li a:visited {
+  color: #F4F1DE;
+}
+#menus ul li:hover a {
+  color: #d9c6a5;
+} 
+
+ /* FIM CSS HEADER */
+
+ /* CSS PAGE BALANÇO */
+ .dashboard {
+   width: 100%;
+   height: 300px;
+   background-color: #00A896;
+   display: grid;
+   grid-template-columns: 1fr;
+   grid-template-rows: 1fr 1fr;
+ }
+
+ .titleDash {
+  width: 633px;
+  height: 50px;
+  background-color: #F4F1DE;
+  border-radius: 10px;
+
+  display: flex;
+  justify-self: center;
+  align-self: center;
+
+  justify-content: center;
+  align-items: center;
+  font-family: 'Montserrat', sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 29px;
+ }
+
+ .cards {
+   display: flex;
+   justify-content: space-around;
+ }
+
+ .creditoCard,
+ .debitoCard,
+ .saldoCard {
+  width: 298px;
+  height: 90px;
+  background-color: #000;
+  margin-top: -45px;
+  border-radius: 20px;
+ }
+
+ .creditoCard .titleCard,
+ .debitoCard .titleCard,
+ .saldoCard .titleCard { 
+   display: block;
+   margin-top: -50px;
+   color: #fff;
+   font-size: 36px;
+   text-align: center;
+ }
+
+ .creditoCard {
+  background: #02C39A;
+ }
+ .debitoCard {
+  background: #EF233C;
+ }
+ .saldoCard {
+  background: #F0F3BD;
+ }
+
+ .creditoCard .value,
+ .debitoCard .value,
+ .saldoCard .value {
+    display: flex;
+    justify-content: center;
+    font-size: 32px;
+    line-height: 90px;
+    color: #fff;
+ }
